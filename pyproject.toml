@@ -1,0 +1,16 @@
+[project]
+name = "pistacheml-api"
+version = "0.1.0"
+description = "Predicts cluster segment for farmer based on farming data"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "pydantic",
+    "joblib",
+    "numpy",
+    "uvicorn",
+    "scikit-learn",
+    "pandas",
+    "ipykernel>=7.2.0",
+    "pyyaml",
+]
