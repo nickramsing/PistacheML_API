@@ -6,27 +6,43 @@ from log_writer.logger import get_logger
 #instantiate module level logger
 logger = get_logger(__name__)
 
-'''
-Load the saved model globally when the app starts
-Avoids reloading the model for every request, improving performance
-
-:param: ML model file
-:outcome: ML model file loaded in app memory
-'''
-
 try:
-    logger.info(f"Loading ML model... ")
-    ag_model = joblib.load(filename='models/ag_model.pkl')
-    #todo: consider file management of pkl file:
-    #todo: use config file for name of file. use date and versioning to manage which file to use.
-    #todo: include this in the README.md file as it concerns model management and versioning
-    logger.info(f"ML model loaded... ")
-except RuntimeError as re:
-    logger.error(f"EXCEPTION: RuntimeError: Model file not found! Execute train_model.py first.  {re}")
-    raise RuntimeError("Model file not found! Please run train_model.py first.")
-except Exception as e:
-    logger.error(f"EXCEPTION OCCURRED:  {e}")
-    raise e
+    import yaml
+except ImportError:
+    raise ImportError("PyYAML is required to read the ag model files. Be sure PyYAML is installed and loaded.")
+
+#todo: config file to load: model_file from the configuration file
+#todo: use config file for name of file. use date and versioning to manage which file to use.
+#model_file="models/files/ag_model_2026-03-28.plk"
+#model_file="models/files/ag_model_2026-03-28.pkl"
+model_file="models/ag_model.pkl"
+
+#insert new ag_model var here -- make below a function to return the ag_model
+#filename='models/ag_model.pkl'
+def load_ag_model(model_file: str):
+    '''
+    Load the saved model globally when the app starts
+    Avoids reloading the model for every request, improving performance
+
+    :param: ML model file
+    :outcome: ML model file loaded in app memory
+    '''
+    try:
+        logger.info(f"Loading ML model... ")
+        ag_model = joblib.load(model_file)
+        logger.info(f"ML model loaded... ")
+        return ag_model
+    except RuntimeError as re:
+        logger.error(f"EXCEPTION: RuntimeError: Model file not found! Execute train_model.py first.  {re}")
+        raise RuntimeError("Model file not found! Please run train_model.py first.")
+    except Exception as e:
+        logger.error(f"EXCEPTION OCCURRED:  {e}")
+        raise e
+
+### Obtain the ag_model
+ag_model = load_ag_model(model_file=model_file)
+
+
 
 
 def predict_ag_model(data_params):

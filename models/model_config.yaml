@@ -1,0 +1,3 @@
+model_file: models/files/ag_model_2026-03-28.plk
+recommendation_file: models/files/ag_model_action_2026-03-28.json
+datetime_format: "%Y-%m-%d %H:%M:%S"

@@ -38,6 +38,10 @@ def predict_cluster(input_data: pistache_input_model):
         prediction = predict_ag_model(data_params=features)
         logger.info(f"Predicted cluster: {prediction}")
 
+        #todo: store input data and predicted cluster -- JSON or small database
+        # only storing to log file at this time
+        logger.info(f"HOW DEAL WITH SESSIONS: input data: {input_data} cluster: {prediction}")
+
         # Return the result as a JSON response
         logger.info(f"Responding with model prediction... ")
         return {"prediction": prediction}
