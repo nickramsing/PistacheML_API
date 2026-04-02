@@ -1,4 +1,6 @@
 import pickle
+from pathlib import Path
+
 import joblib
 from fastapi import HTTPException
 
@@ -13,13 +15,10 @@ except ImportError:
 
 #todo: config file to load: model_file from the configuration file
 #todo: use config file for name of file. use date and versioning to manage which file to use.
-#model_file="models/files/ag_model_2026-03-28.plk"
-#model_file="models/files/ag_model_2026-03-28.pkl"
-model_file="models/ag_model.pkl"
+model_file="models/files/ag_model_2026-03-28.pkl"
 
-#insert new ag_model var here -- make below a function to return the ag_model
-#filename='models/ag_model.pkl'
-def load_ag_model(model_file: str):
+
+def load_ag_model(model_file: Path):
     '''
     Load the saved model globally when the app starts
     Avoids reloading the model for every request, improving performance
