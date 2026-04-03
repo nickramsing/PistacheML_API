@@ -1,6 +1,7 @@
 # 1.0 Problem Domain
-Building on the R generated pistache ML model, can the model be made available for clustering new farmer data?
-How might the prediction model be deployed in a RESTful API to identify clusters of new participating farmers?
+Building on the R generated pistache ML model...
+- Can the model be made available for clustering new farmer data?
+- How might the prediction model be deployed in a RESTful API to identify clusters of new participating farmers?
 
 # 2.0 Solution Vision
 - Host the model and make it accessible from a RESTful API endpoint
@@ -9,12 +10,13 @@ How might the prediction model be deployed in a RESTful API to identify clusters
 - Evaluate the data and return the predicted cluster with additional insight describing the cluster and recommended action
 - Store new input data with model's identified cluster to enable analysis of continued relevance and model fit
 
-# 3.0 Technical Solution
+# 3.0 Implementation
 ## 3.1 Sequence Diagram: Predict based on System input
-insert sequence diagram > here
+- See Use Case Predict for workflow steps
+- ![sequence_diagram](readme_sequence_diagram_predict.png)
 
 ## 3.2 Workflow
-### Use Case: Predict based on system input
+### 3.2.1 Use Case: Predict based on system input
 As a System, I want to submit input ag data and receive a model prediction based on the ML model so that I might identify the cluster to which the pistache farmer might belong  
    1. Predict endpoint (in /routers/ag_model_pistache.py) receives the input data
    2. Validate input data with a model: expected data
@@ -22,7 +24,7 @@ As a System, I want to submit input ag data and receive a model prediction based
    4. Send identified cluster and known insight added to response 
    5. Return response to System with useful information: input data, cluster, cluster description, and recommendations
 
-### Use Case: Manage model and model versions
+### 3.2.2 Use Case: Manage model and model versions
 As a Modeller, I want to retrain the ML model so that the model remains up-to-date and relevant
    1. Obtain new data - ensure it conforms with data structure
    2. Run jupyter notebook or train_ML_mdoel.py to evaluate and generate a new model file
@@ -33,12 +35,17 @@ As a Modeller, I want to retrain the ML model so that the model remains up-to-da
       3. Create config management process to manage model creation and file versioning
    4. Run application and test to ensure the new model is loaded into the system and the system performs as expected
 
+### 3.2.3 Use Case: Monitor model Performance
+As a Modeler, I want to monitor model performance and fit based on system submitted data and derived predictions so that the model can be tuned and modified when necessary (aka: How will I know when to update the model?)
+    1. Store system submitted data along with predicted cluster results
+    2. Periodically retrieve and analyze data to assess model fitness
+
 ## 3.3 Ag Model input model
 1. API endpoint
    - POST /predict
 
-2. Schema
-![schema diagram](readme_input_model_schema.png)
+2. Model Schema
+- ![schema diagram](readme_input_model_schema.png)
 
 3. Example 1:  payload results in Cluster 1
 ```json
@@ -71,10 +78,6 @@ curl -X 'POST' \
   "weed": 350
 }'
 ```
-
-
-### Use Case: Monitor model Performance
-As a Modeler, I want to monitor model performance and fit so that the model can be tuned and modified when necessary (aka: How will I know when to update the model?)
 
 # 4.0 Outcomes
 ## 4.1 Learnings
