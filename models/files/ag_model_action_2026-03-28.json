@@ -1,5 +1,5 @@
 [
-{"cluster": 0, "description": "not weeding", "recommendation":"explore why not weeding"},
-{"cluster": 1, "description": "weeded", "recommendation":"explore soil health"},
-{"cluster": 2, "description": "unknown", "recommendation":"unknown"}
+{"cluster": 0, "description": "weeded", "recommendations":"explore additional inteventions, like soil health"},
+{"cluster": 1, "description": "not weeding", "recommendations":"explore why not weeding"},
+{"cluster": 2, "description": "unknown", "recommendations":"unknown"}
 ]

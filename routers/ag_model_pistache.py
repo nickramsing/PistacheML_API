@@ -8,8 +8,8 @@ logger = get_logger(__name__)
 router = APIRouter()
 
 # Define the prediction endpoint using a POST request
-@router.post("/predict")
-def predict_cluster(input_data: pistache_input_model):
+@router.post("/predict", response_model=dict)
+def predict_cluster(input_data: pistache_input_model) -> dict:
     '''
     Receives a pistache input model data and returns identified cluster
         manages input from User/system
@@ -35,16 +35,20 @@ def predict_cluster(input_data: pistache_input_model):
         ])
 
         logger.info(f"Requesting a prediction based on input data... ")
-        prediction = predict_ag_model(data_params=features)
-        logger.info(f"Predicted cluster: {prediction}")
+        #returns prediction with formatted Dict: from predict_ag_model.construct_response
+        #response keys:
+        #    "data_received" -- but this is a list; replace with input data
+        #    "cluster_identified"
+        #    "cluster_description"
+        #    "cluster_recommendations"
+        prediction_response = predict_ag_model(data_params=features)
 
-        #todo: store input data and predicted cluster -- JSON or small database
-        # only storing to log file at this time
-        logger.info(f"HOW DEAL WITH SESSIONS: input data: {input_data} cluster: {prediction}")
+        #replace data received with input data
+        prediction_response["data_received"] = input_data.model_dump_json()
 
         # Return the result as a JSON response
-        logger.info(f"Responding with model prediction... ")
-        return {"prediction": prediction}
+        logger.info(f"Responding with model prediction... {prediction_response}")
+        return prediction_response
     except Exception as e:
         logger.error(f"EXCEPTION OCCURRED:  {e}")
         raise HTTPException(status_code=500, detail=str(e))
